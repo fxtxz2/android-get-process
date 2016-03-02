@@ -5,3 +5,6 @@
 `ProcessChecker.isCheckProcess(packName,this.getApplicationContext());`  
 true：表示包名packName应用进程已运行；  
 false：表示包名packName应用进程未运行。
+
+# Gradle引入
+`compile 'com.zyl.androidgetprocess:androidgetprocess:0.0.1'`
