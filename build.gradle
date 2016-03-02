@@ -1,0 +1,110 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+// 这个version是区分library版本的，因此当我们需要更新library时记得修改这个version
+version = "0.0.1"
+group = "com.zyl.androidgetprocess" // Maven Group ID for the artifact，一般填你唯一的包名
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName version
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.jaredrummler:android-processes:1.0.7'
+    compile 'commons-io:commons-io:2.4'
+}
+
+// android-maven
+def siteUrl = 'https://github.com/fxtxz2/android-get-process'    // project homepage
+def gitUrl = 'https://github.com/fxtxz2/android-get-process.git' // project git
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                name 'Android Process Util'//一些描述
+                url siteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {//开发者信息
+                        id 'Zhang Ya Lin'
+                        name 'Zhang Ya Lin'
+                        email 'zylstc2009@gmail.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    options{
+        encoding 'UTF-8'
+        charSet 'UTF-8'
+        author true
+    }
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// bintray
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'android-get-process'
+        licenses = ['Apache-2.0']
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        publish = true
+    }
+}
