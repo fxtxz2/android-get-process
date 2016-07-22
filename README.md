@@ -1,4 +1,4 @@
-[![bintray](https://img.shields.io/bintray/v/zyl/maven/android-get-process.svg)](https://bintray.com/zyl/maven/android-get-process/_latestVersion)
+[![bintray](https://api.bintray.com/packages/zyl/maven/android-get-process/images/download.svg)](https://bintray.com/zyl/maven/android-get-process/_latestVersion)
 # android-get-process
 获取其它应用的运行状态进程，在Android5.0上面不能Android的api不在支持获取其它应用的运行进程，只能获取自己的进程，在[jaredrummler/AndroidProcesses](https://github.com/jaredrummler/AndroidProcesses)的基础上面，使用了ps命令解析。
 
